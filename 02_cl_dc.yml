@@ -1,0 +1,52 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  annotations:
+  name: deployment-example
+  namespace: dev07
+  labels:
+    app: deployment-example
+    app.kubernetes.io/component: deployment-example
+    app.kubernetes.io/instance: deployment-example
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 5
+      timeoutSeconds: 600
+      maxUnavailable: 10%
+      maxSurge: 10%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - deployment-example
+        from:
+          kind: ImageStreamTag
+          namespace: dev07
+          name: 'deployment-example:latest'
+        lastTriggeredImage: >-
+          openshift/deployment-example:latest
+  replicas: 10
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    deploymentconfig: deployment-example
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        deploymentconfig: deployment-example
+    spec:
+      containers:
+        - name: deployment-example
+          image: >-
+            openshift/deployment-example:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP

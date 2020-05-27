@@ -1,0 +1,24 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: cl-rt
+  namespace: dev07
+  selfLink: /apis/route.openshift.io/v1/namespaces/dev07/routes/cl-rt
+  uid: 1bba3706-7a5f-47ea-a9bd-60f90ba18eb6
+  resourceVersion: '522143'
+  creationTimestamp: '2020-05-27T07:52:27Z'
+  labels:
+    app: deployment-example
+    app.kubernetes.io/component: deployment-example
+    app.kubernetes.io/instance: deployment-example
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  host: cl-rt-dev07.apps.cluster-f0e8.f0e8.sandbox1284.opentlc.com
+  to:
+    kind: Service
+    name: deployment-example
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  wildcardPolicy: None

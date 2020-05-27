@@ -1,0 +1,19 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: deployment-example
+  namespace: dev07
+  labels:
+    app: deployment-example
+    app.kubernetes.io/component: deployment-example
+    app.kubernetes.io/instance: deployment-example
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: openshift/deployment-example
+      referencePolicy:
+        type: Source
